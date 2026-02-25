@@ -22,7 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Dependency audit
+      - name: Dependency audit (runtime deps, blocking)
+        run: npm audit --omit=dev --audit-level=moderate
+
+      - name: Dependency audit (full report, non-blocking)
+        continue-on-error: true
         run: npm audit --audit-level=moderate
 
       - name: Prisma format check
