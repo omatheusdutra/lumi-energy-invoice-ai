@@ -1,0 +1,85 @@
+name: ci
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: lumi
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d lumi"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/lumi?schema=public
+      OPENAI_API_KEY: test-key
+      HTTP_PROXY: ''
+      HTTPS_PROXY: ''
+      ALL_PROXY: ''
+      NPM_CONFIG_OFFLINE: 'false'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Quality check (format + lint)
+        run: npm run quality:check
+
+      - name: Generate Prisma client
+        run: npm run prisma:generate
+
+      - name: Apply Prisma migrations
+        run: npm run prisma:migrate:deploy
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm run test -- --runInBand
+
+      - name: Integration tests
+        run: npm run test:integration -- --runInBand
+
+      - name: E2E tests
+        run: npm run test:e2e -- --runInBand
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke tests (runtime health endpoints)
+        run: |
+          set -euo pipefail
+          npm run start &
+          APP_PID=$!
+          trap "kill $APP_PID" EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS "http://127.0.0.1:3000/health/liveness" > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl -fsS "http://127.0.0.1:3000/health/liveness" > /dev/null
+          curl -fsS "http://127.0.0.1:3000/health/readiness" > /dev/null

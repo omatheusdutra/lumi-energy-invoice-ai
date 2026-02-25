@@ -1,0 +1,8 @@
+{
+  "N� DO CLIENTE": "3001116735",
+  "M�s de refer�ncia": "SET/2024",
+  "Energia El�trica": { "quantidade_kwh": 100, "valor_rs": 50.2 },
+  "Energia SCEEE s/ICMS": { "quantidade_kwh": 20, "valor_rs": 10.3 },
+  "Energia compensada GD I": { "quantidade_kwh": 30, "valor_rs": 12.1 },
+  "Contrib Ilum Publica Municipal": { "valor_rs": 5.4 }
+}

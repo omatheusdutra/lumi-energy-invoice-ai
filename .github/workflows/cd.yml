@@ -1,0 +1,145 @@
+name: cd
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      run_smoke:
+        description: 'Run post-deploy smoke tests'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=tag
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  post-deploy-smoke:
+    needs: docker-release
+    runs-on: ubuntu-latest
+    if: ${{ (vars.CANARY_BASE_URL != '' || vars.SMOKE_BASE_URL != '') && (github.event_name != 'workflow_dispatch' || inputs.run_smoke == true) }}
+    env:
+      CANARY_BASE_URL: ${{ vars.CANARY_BASE_URL }}
+      SMOKE_BASE_URL: ${{ vars.SMOKE_BASE_URL }}
+      SMOKE_UPLOAD_EXPECTED_STATUS: ${{ vars.SMOKE_UPLOAD_EXPECTED_STATUS }}
+      SMOKE_AUTH_HEADER: ${{ secrets.SMOKE_AUTH_HEADER }}
+      SLO_MAX_ERROR_RATE_LLM_EXTRACT: ${{ vars.SLO_MAX_ERROR_RATE_LLM_EXTRACT }}
+      SLO_MAX_ERROR_RATE_DB_PERSIST: ${{ vars.SLO_MAX_ERROR_RATE_DB_PERSIST }}
+      SLO_MIN_STAGE_SAMPLES: ${{ vars.SLO_MIN_STAGE_SAMPLES }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Readiness smoke check
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE_URL="${CANARY_BASE_URL:-$SMOKE_BASE_URL}"
+          BASE_URL="${BASE_URL%/}"
+          for i in $(seq 1 30); do
+            code=$(curl -sS -o /dev/null -w "%{http_code}" "$BASE_URL/health/readiness" || true)
+            if [ "$code" = "200" ]; then
+              echo "Readiness OK"
+              break
+            fi
+            sleep 5
+          done
+          code=$(curl -sS -o /dev/null -w "%{http_code}" "$BASE_URL/health/readiness")
+          if [ "$code" != "200" ]; then
+            echo "Readiness check failed with status $code"
+            exit 1
+          fi
+
+      - name: Synthetic upload smoke check
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE_URL="${CANARY_BASE_URL:-$SMOKE_BASE_URL}"
+          BASE_URL="${BASE_URL%/}"
+          EXPECTED="${SMOKE_UPLOAD_EXPECTED_STATUS:-400}"
+          TMP_FILE="$(mktemp)"
+          echo "synthetic smoke payload" > "$TMP_FILE"
+          if [ -n "${SMOKE_AUTH_HEADER:-}" ]; then
+            status=$(curl -sS -o /dev/null -w "%{http_code}" \
+              -H "$SMOKE_AUTH_HEADER" \
+              -F "file=@${TMP_FILE};type=text/plain" \
+              "$BASE_URL/invoices/upload")
+          else
+            status=$(curl -sS -o /dev/null -w "%{http_code}" \
+              -F "file=@${TMP_FILE};type=text/plain" \
+              "$BASE_URL/invoices/upload")
+          fi
+          rm -f "$TMP_FILE"
+          if [ "$status" != "$EXPECTED" ]; then
+            echo "Synthetic upload failed: expected $EXPECTED, got $status"
+            exit 1
+          fi
+
+      - name: SLO check for pipeline stage errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE_URL="${CANARY_BASE_URL:-$SMOKE_BASE_URL}"
+          BASE_URL="${BASE_URL%/}"
+          export BASE_URL
+          export SLO_MAX_ERROR_RATE_LLM_EXTRACT="${SLO_MAX_ERROR_RATE_LLM_EXTRACT:-0.05}"
+          export SLO_MAX_ERROR_RATE_DB_PERSIST="${SLO_MAX_ERROR_RATE_DB_PERSIST:-0.02}"
+          export SLO_MIN_STAGE_SAMPLES="${SLO_MIN_STAGE_SAMPLES:-1}"
+          node ./scripts/ops/check-stage-slo.mjs
+
+  rollback-on-smoke-failure:
+    needs: post-deploy-smoke
+    runs-on: ubuntu-latest
+    if: ${{ always() && needs.post-deploy-smoke.result == 'failure' && secrets.ROLLBACK_WEBHOOK_URL != '' }}
+    env:
+      ROLLBACK_WEBHOOK_URL: ${{ secrets.ROLLBACK_WEBHOOK_URL }}
+    steps:
+      - name: Trigger automatic rollback webhook
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS -X POST "$ROLLBACK_WEBHOOK_URL" \
+            -H "content-type: application/json" \
+            -d "{\"release\":\"${GITHUB_REF_NAME}\",\"sha\":\"${GITHUB_SHA}\",\"reason\":\"post-deploy smoke or SLO check failed\"}"
+
+      - name: Rollback triggered
+        shell: bash
+        run: echo "Automatic rollback webhook successfully triggered."

@@ -1,0 +1,13 @@
+{
+  "files.exclude": {
+    "**/.cache": true,
+    "**/.npm-cache": true,
+    "**/.npm-cache-install": true,
+    "**/.npm-cache-local": true,
+    "**/.tmp": true,
+    "**/coverage": true,
+    "**/coverage-full": true,
+    "**/dist": true,
+    "**/node_modules": true
+  }
+}

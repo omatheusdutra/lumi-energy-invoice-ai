@@ -1,0 +1,45 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testRegex": "test/unit/.*\\.spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        "diagnostics": false
+      }
+    ]
+  },
+  "collectCoverageFrom": [
+    "src/app.module.ts",
+    "src/common/http/validation.pipe.ts",
+    "src/common/logging/request-id.middleware.ts",
+    "src/common/security/file-signature.ts",
+    "src/common/security/helmet.ts",
+    "src/common/security/throttler.config.ts",
+    "src/common/security/upload.validation.ts",
+    "src/common/utils/crypto.ts",
+    "src/common/utils/errors.ts",
+    "src/common/utils/money.ts",
+    "src/common/utils/numbers.ts",
+    "src/integrations/llm/llm.client.ts",
+    "src/integrations/llm/llm.errors.ts",
+    "src/integrations/llm/llm.factory.ts",
+    "src/integrations/llm/prompt.ts",
+    "src/integrations/llm/schema.ts",
+    "src/modules/metrics/metrics.service.ts",
+    "src/modules/tariff-readiness/providers/default-tariff.provider.ts",
+    "src/modules/invoices/mappers/invoice-calculator.ts",
+    "src/modules/invoices/mappers/llm-to-domain.mapper.ts"
+  ],
+  "coverageDirectory": "./coverage",
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "testEnvironment": "node"
+}

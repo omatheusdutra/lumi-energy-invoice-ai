@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Invoices + Optional Modules (e2e) GET /docs and /docs-json should expose OpenAPI contract snapshot 1`] = `
+{
+  "info": {
+    "title": "teste-lumi-api API",
+    "version": "1.0.0",
+  },
+  "invoiceUpload": {
+    "hasRequestBody": true,
+    "responses": [
+      "201",
+      "400",
+      "422",
+      "502",
+    ],
+  },
+  "openapi": "3.0.0",
+  "paths": [
+    "/",
+    "/alerts",
+    "/dashboard/energia",
+    "/dashboard/financeiro",
+    "/dashboard/kpis",
+    "/health/liveness",
+    "/health/readiness",
+    "/invoices",
+    "/invoices/upload",
+    "/metrics",
+    "/tariff-readiness/plans",
+    "/tariff-readiness/simulate",
+  ],
+  "requiredPaths": {
+    "dashboardEnergia": true,
+    "dashboardFinanceiro": true,
+    "invoices": true,
+    "upload": true,
+  },
+  "schemas": [
+    "Object",
+    "SimulateTariffDto",
+    "UploadInvoiceDto",
+  ],
+}
+`;

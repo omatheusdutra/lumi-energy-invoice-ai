@@ -1,0 +1,16 @@
+# Dependencies and generated outputs
+node_modules/
+dist/
+coverage/
+coverage-full/
+
+# Caches and temporary folders
+.cache/
+.npm-cache/
+.npm-cache-install/
+.npm-cache-local/
+.tmp/
+
+# Lockfiles and binary fixtures
+package-lock.json
+test/fixtures/*.pdf

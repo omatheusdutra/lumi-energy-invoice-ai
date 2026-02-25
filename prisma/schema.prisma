@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProcessingStatus {
+  RECEIVED
+  LLM_EXTRACTED
+  VALIDATED
+  STORED
+  FAILED
+}
+
+enum AlertType {
+  CONSUMO_SPIKE
+  GASTO_FORA_PADRAO
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+model Invoice {
+  id                       String   @id @default(uuid())
+  numeroCliente            String
+  mesReferencia            String
+  mesReferenciaDate        DateTime
+
+  energiaEletricaKwh       Float
+  energiaEletricaRs        Float
+  energiaSceeeKwh          Float
+  energiaSceeeRs           Float
+  energiaCompensadaGdiKwh  Float
+  energiaCompensadaGdiRs   Float
+  contribIlumRs            Float
+
+  consumoKwh               Float
+  energiaCompensadaKwh     Float
+  valorTotalSemGd          Float
+  economiaGdRs             Float
+
+  sourceFilename           String
+  hashSha256               String   @unique
+  dedupCompositeKey        String   @unique
+
+  createdAt                DateTime @default(now())
+
+  processings              InvoiceProcessing[]
+  simulations              TariffSimulation[]
+
+  @@index([numeroCliente, mesReferencia])
+  @@index([mesReferenciaDate])
+}
+
+model InvoiceProcessing {
+  id                 String           @id @default(uuid())
+  hashSha256         String           @unique
+  sourceFilename     String
+  dedupCompositeKey  String?          @unique
+  numeroCliente      String?
+  mesReferencia      String?
+  status             ProcessingStatus
+  rawLlmJson         Json?
+  redactedLlmJson    Json?
+  errorReason        String?
+  invoiceId          String?
+
+  invoice            Invoice?         @relation(fields: [invoiceId], references: [id])
+
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([numeroCliente, mesReferencia])
+  @@index([createdAt])
+}
+
+model Alert {
+  id            String        @id @default(uuid())
+  numeroCliente String
+  mesReferencia String
+  alertType     AlertType
+  severity      AlertSeverity
+  message       String
+  metricValue   Float?
+  baselineValue Float?
+  deltaPercent  Float?
+  isResolved    Boolean       @default(false)
+  metadata      Json?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([numeroCliente, mesReferencia])
+  @@unique([numeroCliente, mesReferencia, alertType])
+}
+
+model TariffPlan {
+  id          String             @id @default(uuid())
+  name        String             @unique
+  provider    String
+  currency    String             @default("BRL")
+  isActive    Boolean            @default(true)
+  metadata    Json?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  simulations TariffSimulation[]
+}
+
+model TariffSimulation {
+  id              String     @id @default(uuid())
+  invoiceId       String
+  tariffPlanId    String
+  baselineCostRs  Float
+  estimatedCostRs Float
+  savingsRs       Float
+  savingsPercent  Float
+  details         Json?
+  createdAt       DateTime   @default(now())
+
+  invoice         Invoice    @relation(fields: [invoiceId], references: [id])
+  tariffPlan      TariffPlan @relation(fields: [tariffPlanId], references: [id])
+
+  @@index([invoiceId])
+  @@index([tariffPlanId])
+}
