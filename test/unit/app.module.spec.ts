@@ -2,7 +2,7 @@ import { MODULE_METADATA } from '@nestjs/common/constants';
 
 describe('AppModule', () => {
   it('is defined and declares imports/providers metadata', async () => {
-    let AppModuleRef: unknown;
+    let AppModuleRef: object | undefined;
 
     await jest.isolateModulesAsync(async () => {
       jest.doMock('../../src/common/banner/startup-banner.service', () => ({
@@ -14,6 +14,10 @@ describe('AppModule', () => {
     });
 
     expect(AppModuleRef).toBeDefined();
+
+    if (!AppModuleRef) {
+      throw new Error('AppModule was not loaded');
+    }
 
     const imports = Reflect.getMetadata(MODULE_METADATA.IMPORTS, AppModuleRef) as unknown[];
     const providers = Reflect.getMetadata(MODULE_METADATA.PROVIDERS, AppModuleRef) as unknown[];

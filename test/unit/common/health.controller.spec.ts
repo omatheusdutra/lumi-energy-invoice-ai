@@ -15,8 +15,10 @@ describe('HealthController', () => {
     const req = { requestId: 'req-1' } as any;
 
     expect(controller.root(req).status).toBe('ok');
-    expect(controller.liveness(req).status).toBe('ok');
-    await expect(controller.readiness(req)).resolves.toEqual({ status: 'ready' });
+    const liveness = await Promise.resolve(controller.liveness(req));
+    const readiness = await Promise.resolve(controller.readiness(req));
+    expect(liveness).toEqual({ status: 'ok' });
+    expect(readiness).toEqual({ status: 'ready' });
 
     expect(getApiInfo).toHaveBeenCalledWith('req-1');
     expect(getLiveness).toHaveBeenCalledWith('req-1');
