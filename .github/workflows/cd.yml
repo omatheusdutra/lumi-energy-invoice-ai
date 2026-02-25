@@ -128,11 +128,12 @@ jobs:
   rollback-on-smoke-failure:
     needs: post-deploy-smoke
     runs-on: ubuntu-latest
-    if: ${{ always() && needs.post-deploy-smoke.result == 'failure' && secrets.ROLLBACK_WEBHOOK_URL != '' }}
+    if: ${{ always() && needs.post-deploy-smoke.result == 'failure' }}
     env:
       ROLLBACK_WEBHOOK_URL: ${{ secrets.ROLLBACK_WEBHOOK_URL }}
     steps:
       - name: Trigger automatic rollback webhook
+        if: ${{ env.ROLLBACK_WEBHOOK_URL != '' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -141,5 +142,11 @@ jobs:
             -d "{\"release\":\"${GITHUB_REF_NAME}\",\"sha\":\"${GITHUB_SHA}\",\"reason\":\"post-deploy smoke or SLO check failed\"}"
 
       - name: Rollback triggered
+        if: ${{ env.ROLLBACK_WEBHOOK_URL != '' }}
         shell: bash
         run: echo "Automatic rollback webhook successfully triggered."
+
+      - name: Rollback skipped (webhook not configured)
+        if: ${{ env.ROLLBACK_WEBHOOK_URL == '' }}
+        shell: bash
+        run: echo "ROLLBACK_WEBHOOK_URL not configured; skipping automatic rollback."

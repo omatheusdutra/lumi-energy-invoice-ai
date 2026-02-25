@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const baseConfig = require('./jest.config.json');
 
 const fullCoverageFiles = [
@@ -9,7 +10,8 @@ const fullCoverageFiles = [
   'src/modules/tariff-readiness/tariff-readiness.controller.ts',
 ];
 
-const { coverageThreshold, ...rest } = baseConfig;
+const rest = { ...baseConfig };
+delete rest.coverageThreshold;
 
 module.exports = {
   ...rest,
