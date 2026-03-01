@@ -395,7 +395,7 @@ Trade-offs:
 | Item                                                   | Status |
 | ------------------------------------------------------ | ------ |
 | Upload de PDF via API                                  | ✅     |
-| PDF enviado ao LLM multimodal (sem OCR local)         | ✅     |
+| PDF enviado ao LLM multimodal (sem OCR local)          | ✅     |
 | JSON estrito com schema fechado                        | ✅     |
 | Cálculos obrigatórios implementados                    | ✅     |
 | Persistência relacional com ORM                        | ✅     |

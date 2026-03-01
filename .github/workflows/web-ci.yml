@@ -1,4 +1,4 @@
-name: web-ci
+﻿name: web-ci
 
 on:
   push:
@@ -15,6 +15,8 @@ on:
 jobs:
   quality:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:3000
     defaults:
       run:
         working-directory: web
@@ -28,10 +30,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: web/package.json
+          cache-dependency-path: web/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Lint
         run: npm run lint

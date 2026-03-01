@@ -647,4 +647,3 @@ describe('Invoices + Optional Modules (e2e)', () => {
     expect(contractSnapshot).toMatchSnapshot();
   });
 });
-
