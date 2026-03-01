@@ -1,48 +1,48 @@
-# ? Lumi Energy Invoice Intelligence
+# ‚ö° Lumi Energy Invoice Intelligence
 
 [![Node.js](https://img.shields.io/badge/Node.js-20.19%2B-339933?logo=nodedotjs&logoColor=white)](#-setup-local)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6?logo=typescript&logoColor=white)](#-arquitetura)
-[![NestJS](https://img.shields.io/badge/NestJS-11-e0234e?logo=nestjs&logoColor=white)](#-decisıes-arquiteturais)
-[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma&logoColor=white)](#-decisıes-arquiteturais)
+[![NestJS](https://img.shields.io/badge/NestJS-11-e0234e?logo=nestjs&logoColor=white)](#-decisoes-arquiteturais)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma&logoColor=white)](#-decisoes-arquiteturais)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql&logoColor=white)](#-setup-local)
 [![Tests](https://img.shields.io/badge/Tests-Jest%20%2B%20Vitest-0ea5e9)](#-testes-e-mock-de-llm)
 [![License](https://img.shields.io/badge/License-MIT-111827)](LICENSE)
 
-API NestJS + portal Next.js para ingest„o de faturas de energia em PDF, extraÁ„o multimodal com LLM, validaÁ„o JSON estrita, c·lculos do desafio Lumi e dashboards de energia/financeiro.  
-Direcionado a qualidade de produÁ„o: seguranÁa, idempotÍncia, observabilidade e testes. ????????
+API NestJS + portal Next.js para ingest√£o de faturas de energia em PDF, extra√ß√£o multimodal com LLM, valida√ß√£o JSON estrita, c√°lculos do desafio Lumi e dashboards de energia/financeiro.
+Direcionado √† qualidade de produ√ß√£o: seguran√ßa, idempot√™ncia, observabilidade e testes. ‚ö°üîíüß†üìäüß™
 
-## ?? Hierarquia da documentaÁ„o
+## üß≠ Hierarquia da documenta√ß√£o
 
-- `README.md` (raiz): referÍncia canÙnica do projeto.
-- [web/README.md](web/README.md): detalhes especÌficos do frontend.
-- [docs/README.md](docs/README.md): Ìndice r·pido sem duplicaÁ„o.
+- `README.md` (raiz): refer√™ncia can√¥nica do projeto.
+- [web/README.md](web/README.md): detalhes espec√≠ficos do frontend.
+- [docs/README.md](docs/README.md): √≠ndice r√°pido sem duplica√ß√£o.
 
-## ?? Overview
+## üß† Overview
 
 Fluxo principal exigido pelo teste:
 
 1. Upload de PDF (`POST /invoices/upload`).
 2. Envio do PDF ao LLM multimodal (sem OCR/parser local).
 3. Resposta em JSON estrito (schema fechado).
-4. ValidaÁ„o + normalizaÁ„o de n˙meros pt-BR.
-5. C·lculos derivados obrigatÛrios.
-6. PersistÍncia relacional com Prisma/PostgreSQL.
-7. ExposiÁ„o dos endpoints de listagem e dashboards.
+4. Valida√ß√£o + normaliza√ß√£o de n√∫meros pt-BR.
+5. C√°lculos derivados obrigat√≥rios.
+6. Persist√™ncia relacional com Prisma/PostgreSQL.
+7. Exposi√ß√£o dos endpoints de listagem e dashboards.
 
-C·lculos obrigatÛrios implementados:
+C√°lculos obrigat√≥rios implementados:
 
 - `consumo_kwh = energia_eletrica_kwh + energia_sceee_kwh`
 - `energia_compensada_kwh = energia_compensada_gdi_kwh`
 - `valor_total_sem_gd = energia_eletrica_rs + energia_sceee_rs + contrib_ilum_rs`
 - `economia_gd_rs = energia_compensada_gdi_rs`
 
-## ?? Arquitetura
+## üèóÔ∏è Arquitetura
 
 ### Backend
 
-- Framework: NestJS 11 (mÛdulos, DI, filtros, interceptors e guards).
+- Framework: NestJS 11 (m√≥dulos, DI, filtros, interceptors e guards).
 - ORM: Prisma sobre PostgreSQL.
-- AbstraÁ„o de LLM: interface `LlmClient` com providers:
+- Abstra√ß√£o de LLM: interface `LlmClient` com providers:
   - `GeminiClient`
   - `OpenAiResponsesClient`
 - Cross-cutting:
@@ -56,13 +56,13 @@ C·lculos obrigatÛrios implementados:
 
 - Next.js 14 (App Router) + TypeScript.
 - TanStack Query + Zod + Recharts.
-- Rotas de upload, dashboard, faturas, creditos, unidades, configuracoes e pagamentos.
+- Rotas de upload, dashboard, faturas, cr√©ditos, unidades, configura√ß√µes e pagamentos.
 
-## ?? API Endpoints
+## üì° API Endpoints
 
 ### Core do teste
 
-| MÈtodo | Endpoint                | DescriÁ„o                     |
+| M√©todo | Endpoint                | Descri√ß√£o                     |
 | ------ | ----------------------- | ----------------------------- |
 | `POST` | `/invoices/upload`      | Upload e processamento de PDF |
 | `GET`  | `/invoices`             | Listagem paginada com filtros |
@@ -71,19 +71,19 @@ C·lculos obrigatÛrios implementados:
 
 ### Complementares do projeto
 
-| MÈtodo | Endpoint                     | DescriÁ„o           |
+| M√©todo | Endpoint                     | Descri√ß√£o           |
 | ------ | ---------------------------- | ------------------- |
 | `GET`  | `/dashboard/kpis`            | KPIs e benchmark    |
 | `GET`  | `/alerts`                    | Alertas de anomalia |
-| `GET`  | `/tariff-readiness/plans`    | Planos tarif·rios   |
-| `POST` | `/tariff-readiness/simulate` | SimulaÁ„o tarif·ria |
-| `GET`  | `/`                          | Info b·sica da API  |
+| `GET`  | `/tariff-readiness/plans`    | Planos tarif√°rios   |
+| `POST` | `/tariff-readiness/simulate` | Simula√ß√£o tarif√°ria |
+| `GET`  | `/`                          | Info b√°sica da API  |
 | `GET`  | `/health/liveness`           | Liveness            |
 | `GET`  | `/health/readiness`          | Readiness           |
-| `GET`  | `/metrics`                   | MÈtricas Prometheus |
+| `GET`  | `/metrics`                   | M√©tricas Prometheus |
 | `GET`  | `/docs`                      | Swagger             |
 
-## ?? Exemplos de requisiÁıes (curl)
+## üíª Exemplos de requisi√ß√µes (curl)
 
 ### Upload e processamento de fatura
 
@@ -181,9 +181,9 @@ Resposta 200 (exemplo):
 }
 ```
 
-## ?? Tratamento de erros
+## üö® Tratamento de erros
 
-Formato de erro padr„o:
+Formato de erro padr√£o:
 
 ```json
 {
@@ -197,37 +197,37 @@ Formato de erro padr„o:
 
 Status esperados:
 
-- `400`: arquivo inv·lido, filtro inv·lido ou ausÍncia de `file`.
-- `422`: JSON/schema inv·lido retornado pelo LLM.
+- `400`: arquivo inv√°lido, filtro inv√°lido ou aus√™ncia de `file`.
+- `422`: JSON/schema inv√°lido retornado pelo LLM.
 - `502`: indisponibilidade do provider LLM/circuit breaker.
-- `503`: readiness indisponÌvel.
+- `503`: readiness indispon√≠vel.
 
-## ?? Vari·veis de ambiente
+## üîê Vari√°veis de ambiente
 
 Arquivo base: [.env.example](.env.example)
 
-> `OPENAI_API_KEY` e qualquer segredo de LLM ficam somente no backend.  
-> No frontend use apenas vari·veis `NEXT_PUBLIC_*`.
+> `OPENAI_API_KEY` e qualquer segredo de LLM ficam somente no backend.
+> No frontend use apenas vari√°veis `NEXT_PUBLIC_*`.
 
 ### Backend (principais)
 
-| Vari·vel             | ObrigatÛria | DescriÁ„o                           |
+| Vari√°vel             | Obrigat√≥ria | Descri√ß√£o                           |
 | -------------------- | ----------- | ----------------------------------- |
 | `NODE_ENV`           | Sim         | `development`, `test`, `production` |
 | `APP_NAME`           | Sim         | Nome da API                         |
-| `PORT`               | Sim         | Porta da API (padr„o 3000)          |
-| `DATABASE_URL`       | Sim         | Conex„o PostgreSQL                  |
+| `PORT`               | Sim         | Porta da API (padr√£o 3000)          |
+| `DATABASE_URL`       | Sim         | Conex√£o PostgreSQL                  |
 | `OPENAI_API_KEY`     | Sim         | Chave do provider LLM               |
-| `OPENAI_BASE_URL`    | N„o         | Base URL do provider                |
+| `OPENAI_BASE_URL`    | N√£o         | Base URL do provider                |
 | `OPENAI_MODEL`       | Sim         | Modelo LLM                          |
 | `OPENAI_TIMEOUT_MS`  | Sim         | Timeout LLM                         |
 | `OPENAI_MAX_RETRIES` | Sim         | Retries LLM                         |
-| `LOG_LEVEL`          | Sim         | NÌvel de logs                       |
-| `LOG_FORMAT`         | N„o         | `pretty`/`json`                     |
+| `LOG_LEVEL`          | Sim         | N√≠vel de logs                       |
+| `LOG_FORMAT`         | N√£o         | `pretty`/`json`                     |
 
-### Backend (seguranÁa e operaÁ„o)
+### Backend (seguran√ßa e opera√ß√£o)
 
-| Vari·vel                                |
+| Vari√°vel                                |
 | --------------------------------------- |
 | `UPLOAD_MAX_MB`                         |
 | `JSON_BODY_LIMIT_MB`                    |
@@ -257,14 +257,14 @@ Arquivo base: [.env.example](.env.example)
 
 ### Frontend (`web/.env.example`)
 
-| Vari·vel                                    | DescriÁ„o                                 |
+| Vari√°vel                                    | Descri√ß√£o                                 |
 | ------------------------------------------- | ----------------------------------------- |
 | `NEXT_PUBLIC_API_BASE_URL`                  | URL da API (ex.: `http://localhost:3000`) |
 | `NEXT_PUBLIC_APP_NAME`                      | Nome exibido no portal                    |
 | `NEXT_PUBLIC_ENABLE_EXPERIMENTAL_DASHBOARD` | Flag de UI                                |
 | `NEXT_PUBLIC_ENABLE_RENDER_PROFILING`       | Profiling em dev                          |
 
-## ?? Setup local
+## ‚öôÔ∏è Setup local
 
 Pre-requisitos:
 
@@ -272,14 +272,14 @@ Pre-requisitos:
 - npm 10+
 - Docker + Docker Compose
 
-### InstalaÁ„o
+### Instala√ß√£o
 
 ```bash
 npm ci
 npm --prefix web ci
 ```
 
-### Banco e migraÁıes
+### Banco e migra√ß√µes
 
 ```bash
 docker compose up -d postgres
@@ -293,7 +293,7 @@ npm run prisma:migrate:deploy:safe
 npm run prisma:seed
 ```
 
-## ? ExecuÁ„o (dev e prod)
+## ‚ñ∂Ô∏è Execu√ß√£o (dev e prod)
 
 ### Desenvolvimento
 
@@ -315,7 +315,7 @@ URLs:
 - Swagger: `http://localhost:3000/docs`
 - Web: `http://localhost:3001/dashboard`
 
-### ProduÁ„o
+### Produ√ß√£o
 
 Backend:
 
@@ -331,7 +331,7 @@ npm --prefix web run build
 npm --prefix web run start
 ```
 
-## ?? Testes e mock de LLM
+## üß™ Testes e mock de LLM
 
 Backend:
 
@@ -357,56 +357,55 @@ Mock de LLM:
 - Unit tests usam `LlmClient` mockado.
 - E2E sobrescreve provider `LLM_CLIENT` com doubles, sem rede real.
 
-## ?? Security notes
+## üõ°Ô∏è Security notes
 
-- ValidaÁ„o de PDF por MIME + assinatura `%PDF-`.
-- Limites de upload e body configur·veis.
+- Valida√ß√£o de PDF por MIME + assinatura `%PDF-`.
+- Limites de upload e body configur√°veis.
 - `helmet`, `throttler` e `requestId` ativos.
-- Schema estrito (`additionalProperties: false`) + validaÁ„o Zod.
-- Retry/backoff/circuit-breaker para resiliÍncia no provider LLM.
-- Logs estruturados com controle de stack e sem vazamento de payload sensÌvel.
+- Schema estrito (`additionalProperties: false`) + valida√ß√£o Zod.
+- Retry/backoff/circuit-breaker para resili√™ncia no provider LLM.
+- Logs estruturados com controle de stack e sem vazamento de payload sens√≠vel.
 
-## ?? Decisıes arquiteturais
+## üß© Decis√µes arquiteturais
 
 ### Framework backend: NestJS
 
 - Modularidade, DI e testabilidade forte.
-- Pipeline nativo para validaÁ„o, filtros e observabilidade.
+- Pipeline nativo para valida√ß√£o, filtros e observabilidade.
 
 ### ORM: Prisma
 
 - Tipagem ponta a ponta em TypeScript.
-- MigraÁıes previsÌveis e queries agregadas eficientes.
-- Constraints para deduplicaÁ„o/idempotÍncia (`hashSha256`, `dedupCompositeKey`).
+- Migra√ß√µes previs√≠veis e queries agregadas eficientes.
+- Constraints para deduplica√ß√£o/idempot√™ncia (`hashSha256`, `dedupCompositeKey`).
 
-### LLM: abstraÁ„o com providers plug·veis
+### LLM: abstra√ß√£o com providers plug√°veis
 
 - `GeminiClient` e `OpenAiResponsesClient` sob `LlmClient`.
 - Reduz acoplamento e lock-in.
-- Permite fallback de provider sem tocar regra de negÛcio.
+- Permite fallback de provider sem tocar regra de neg√≥cio.
 
 Trade-offs:
 
-- Mais validaÁıes e resiliÍncia aumentam complexidade.
+- Mais valida√ß√µes e resili√™ncia aumentam complexidade.
 - Em troca, reduz risco de dados incorretos e melhora robustez operacional.
 
-## ? Checklist do teste Lumi
+## ‚úÖ Checklist do teste Lumi
 
 | Item                                                   | Status |
 | ------------------------------------------------------ | ------ |
-| Upload de PDF via API                                  | ?     |
-| PDF enviado ao LLM multimodal (sem OCR local)          | ?     |
-| JSON estrito com schema fechado                        | ?     |
-| C·lculos obrigatÛrios implementados                    | ?     |
-| PersistÍncia relacional com ORM                        | ?     |
-| `GET /invoices` com filtros/paginaÁ„o                  | ?     |
-| `GET /dashboard/energia` e `GET /dashboard/financeiro` | ?     |
-| Tratamento de erro consistente (`400/422/502/503`)     | ?     |
-| Testes automatizados com mock de LLM                   | ?     |
-| DocumentaÁ„o completa de setup/env/execuÁ„o/API        | ?     |
+| Upload de PDF via API                                  | ‚úÖ     |
+| PDF enviado ao LLM multimodal (sem OCR local)         | ‚úÖ     |
+| JSON estrito com schema fechado                        | ‚úÖ     |
+| C√°lculos obrigat√≥rios implementados                    | ‚úÖ     |
+| Persist√™ncia relacional com ORM                        | ‚úÖ     |
+| `GET /invoices` com filtros/pagina√ß√£o                  | ‚úÖ     |
+| `GET /dashboard/energia` e `GET /dashboard/financeiro` | ‚úÖ     |
+| Tratamento de erro consistente (`400/422/502/503`)     | ‚úÖ     |
+| Testes automatizados com mock de LLM                   | ‚úÖ     |
+| Documenta√ß√£o completa de setup/env/execu√ß√£o/API        | ‚úÖ     |
 
-## ?? ReferÍncias
+## üîó Refer√™ncias
 
 - Frontend: [web/README.md](web/README.md)
-- Õndice de docs: [docs/README.md](docs/README.md)
-
+- √çndice de docs: [docs/README.md](docs/README.md)
