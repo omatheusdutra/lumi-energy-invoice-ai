@@ -1,0 +1,53 @@
+services:
+  - type: web
+    name: lumi-energy-api
+    runtime: node
+    rootDir: .
+    buildCommand: npm ci && npm run prisma:generate && npm run prisma:migrate:deploy && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /health/liveness
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_NAME
+        value: lumi-energy-api
+      - key: LOG_LEVEL
+        value: info
+      - key: LOG_FORMAT
+        value: json
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lumi-postgres
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_BASE_URL
+        value: https://generativelanguage.googleapis.com/v1beta/openai/
+      - key: OPENAI_MODEL
+        value: gemini-2.5-flash
+      - key: CORS_ORIGIN
+        value: "*"
+
+  - type: web
+    name: lumi-energy-web
+    runtime: node
+    rootDir: web
+    buildCommand: npm ci && npm run build
+    startCommand: npx next start -p $PORT
+    healthCheckPath: /dashboard
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_NAME
+        value: Energy Analytics Hub
+      - key: NEXT_PUBLIC_API_BASE_URL
+        value: https://lumi-energy-api.onrender.com
+      - key: NEXT_PUBLIC_ENABLE_EXPERIMENTAL_DASHBOARD
+        value: "false"
+      - key: NEXT_PUBLIC_ENABLE_RENDER_PROFILING
+        value: "false"
+
+databases:
+  - name: lumi-postgres
+    databaseName: lumi
+    user: lumi
