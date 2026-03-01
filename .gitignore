@@ -5,6 +5,8 @@ node_modules/
 dist/
 coverage/
 coverage-full/
+web/.next/
+web/coverage/
 *.tsbuildinfo
 
 # Environment files
@@ -31,7 +33,9 @@ test.db
 .npm-cache-install/
 .npm-cache-local/
 .tmp/
+.vscode/
 .eslintcache
+*.tmp
 
 # OS files
 .DS_Store
@@ -39,4 +43,3 @@ Thumbs.db
 
 
 .repo/
-

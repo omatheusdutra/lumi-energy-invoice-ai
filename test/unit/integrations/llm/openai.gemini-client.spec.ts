@@ -79,7 +79,8 @@ describe('GeminiClient', () => {
 
     expect(body.generationConfig.responseMimeType).toBe('application/json');
     expect(body.generationConfig.responseSchema).toBeDefined();
-    expect(body.generationConfig.responseSchema.additionalProperties).toBe(false);
+    // Gemini responseSchema does not accept additionalProperties in this endpoint.
+    expect(body.generationConfig.responseSchema.additionalProperties).toBeUndefined();
     expect(body.generationConfig.responseSchema.required).toContain(fields.CLIENT_NUMBER_FIELD);
     expect(result[fields.CLIENT_NUMBER_FIELD]).toBe('3001116735');
   });

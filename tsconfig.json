@@ -18,5 +18,7 @@
     "noUncheckedIndexedAccess": true,
     "strictNullChecks": true,
     "isolatedModules": true
-  }
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "prisma/**/*.ts"],
+  "exclude": ["node_modules", "dist", "web", ".next", ".tmp"]
 }

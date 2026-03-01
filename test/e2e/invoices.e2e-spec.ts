@@ -1,4 +1,4 @@
-import { INestApplication, UnprocessableEntityException } from '@nestjs/common';
+﻿import { INestApplication, UnprocessableEntityException } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProcessingStatus } from '@prisma/client';
@@ -335,7 +335,7 @@ describe('Invoices + Optional Modules (e2e)', () => {
     app.useGlobalFilters(new HttpExceptionFilter());
     app.useGlobalInterceptors(new HttpLoggingInterceptor());
     const swaggerConfig = new DocumentBuilder()
-      .setTitle('teste-lumi-api API')
+      .setTitle('lumi-energy-api API')
       .setDescription('API documentation')
       .setVersion('1.0.0')
       .build();
@@ -647,3 +647,4 @@ describe('Invoices + Optional Modules (e2e)', () => {
     expect(contractSnapshot).toMatchSnapshot();
   });
 });
+

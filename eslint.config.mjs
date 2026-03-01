@@ -10,6 +10,7 @@ export default tseslint.config(
       'node_modules/**',
       '.npm-cache/**',
       'coverage/**',
+      'web/**',
       'test/fixtures/**',
       'prisma/migrations/**',
     ],

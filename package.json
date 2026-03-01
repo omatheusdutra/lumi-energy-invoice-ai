@@ -1,5 +1,5 @@
 {
-  "name": "teste-lumi-api",
+  "name": "lumi-energy-api",
   "version": "1.0.0",
   "description": "API RESTful para processamento de faturas de energia via LLM multimodal",
   "private": true,
@@ -12,7 +12,9 @@
     "start": "npm run start:prod",
     "start:dev": "cross-env NODE_ENV=development LOG_FORMAT=pretty nest start --watch",
     "start:prod": "cross-env LOG_FORMAT=json node dist/src/main.js",
-    "dev": "npm run start:dev",
+    "dev": "npm run dev:api",
+    "dev:api": "npm run start:dev",
+    "dev:web": "npm --prefix web run dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
@@ -89,3 +91,4 @@
     "typescript-eslint": "^8.26.1"
   }
 }
+

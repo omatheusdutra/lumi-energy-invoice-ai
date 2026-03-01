@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+﻿// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Invoices + Optional Modules (e2e) GET /docs and /docs-json should expose OpenAPI contract snapshot 1`] = `
 {
   "info": {
-    "title": "teste-lumi-api API",
+    "title": "lumi-energy-api API",
     "version": "1.0.0",
   },
   "invoiceUpload": {
@@ -43,3 +43,4 @@ exports[`Invoices + Optional Modules (e2e) GET /docs and /docs-json should expos
   ],
 }
 `;
+

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Invoice, Prisma } from '@prisma/client';
+import { Invoice, Prisma, ProcessingStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { InvoiceCreateInput, InvoiceFilters, Pagination } from './invoice.types';
 
@@ -21,6 +21,25 @@ export class InvoicesRepository {
 
   async create(data: InvoiceCreateInput): Promise<Invoice> {
     return this.prisma.invoice.create({ data });
+  }
+
+  async createWithProcessing(data: InvoiceCreateInput, processingId: string): Promise<Invoice> {
+    return this.prisma.$transaction(async (tx) => {
+      const invoice = await tx.invoice.create({ data });
+
+      await tx.invoiceProcessing.update({
+        where: { id: processingId },
+        data: {
+          status: ProcessingStatus.STORED,
+          invoice: {
+            connect: { id: invoice.id },
+          },
+          errorReason: null,
+        },
+      });
+
+      return invoice;
+    });
   }
 
   async list(

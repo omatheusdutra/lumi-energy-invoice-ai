@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 24% 96%;
+  --foreground: 220 35% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 35% 12%;
+  --border: 214 24% 88%;
+  --muted: 210 20% 93%;
+  --muted-foreground: 217 16% 38%;
+  --primary: 203 96% 42%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 204 86% 92%;
+  --accent-foreground: 211 78% 23%;
+  --success: 199 96% 42%;
+  --warning: 35 90% 45%;
+  --danger: 0 70% 45%;
+  --radius: 0.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: 215 30% 10%;
+    --foreground: 210 20% 94%;
+    --card: 215 25% 14%;
+    --card-foreground: 210 20% 94%;
+    --border: 216 20% 24%;
+    --muted: 216 20% 18%;
+    --muted-foreground: 216 12% 70%;
+    --primary: 199 98% 55%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 211 52% 26%;
+    --accent-foreground: 201 95% 90%;
+  }
+}
+
+* {
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+a {
+  @apply text-primary underline-offset-4 hover:underline;
+}
+
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.app-gradient {
+  background:
+    radial-gradient(circle at 8% 14%, rgba(14, 165, 233, 0.15), transparent 30%),
+    radial-gradient(circle at 92% 8%, rgba(37, 99, 235, 0.13), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(244, 247, 248, 0.98));
+}

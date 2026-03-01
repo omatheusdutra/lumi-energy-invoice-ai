@@ -159,13 +159,16 @@ export class InvoicesService {
       currentStage = 'db_persist';
       const persistenceStartedAt = Date.now();
       currentStageStartedAt = persistenceStartedAt;
-      const invoice = await this.invoicesRepository.create({
+      const invoiceData = {
         ...mapped,
         ...derived,
         sourceFilename: file.originalname,
         hashSha256,
         dedupCompositeKey,
-      });
+      };
+      const invoice = processing
+        ? await this.invoicesRepository.createWithProcessing(invoiceData, processing.id)
+        : await this.invoicesRepository.create(invoiceData);
       recordInvoiceStageSuccess('db_persist', Date.now() - persistenceStartedAt);
       log({
         level: 'info',
@@ -174,10 +177,6 @@ export class InvoicesService {
         invoiceId: invoice.id,
         durationMs: Date.now() - persistenceStartedAt,
       });
-
-      if (processing) {
-        await this.invoiceProcessingService.markStored(processing.id, invoice.id);
-      }
 
       await this.evaluateAlertsSafely(invoice);
       log({

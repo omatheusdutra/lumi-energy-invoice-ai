@@ -16,12 +16,19 @@ function toDisplayUrl(url: string): string {
 }
 
 function readVersion(): string {
+  const versionFromEnv = process.env.npm_package_version?.trim();
+  if (versionFromEnv) {
+    return versionFromEnv;
+  }
+
   try {
     const file = readFileSync(join(process.cwd(), 'package.json'), 'utf8');
-    const parsed = JSON.parse(file) as PackageJsonMeta;
-    return parsed.version ?? 'unknown';
+    // Handles files written with UTF-8 BOM (common on Windows).
+    const normalized = file.replace(/^\uFEFF/, '');
+    const parsed = JSON.parse(normalized) as PackageJsonMeta;
+    return parsed.version?.trim() ?? '';
   } catch {
-    return 'unknown';
+    return '';
   }
 }
 
@@ -48,7 +55,7 @@ export class StartupBannerService {
       type: 'startup',
       app: env.APP_NAME,
       env: env.NODE_ENV,
-      version: readVersion(),
+      version: readVersion() || undefined,
       commit: commit || undefined,
       url,
       docs: `${url}/docs`,
@@ -66,18 +73,26 @@ export class StartupBannerService {
     const label = (text: string): string => tone.gray(text);
     const value = (text: string): string => tone.greenBright(text);
 
-    const bannerTitle = payload.commit
-      ? `${env.APP_NAME} - ${payload.version} - ${payload.commit}`
-      : `${env.APP_NAME} - ${payload.version}`;
+    const titleParts = [env.APP_NAME];
+    if (payload.version) {
+      titleParts.push(payload.version);
+    }
+    if (payload.commit) {
+      titleParts.push(payload.commit);
+    }
+    const bannerTitle = titleParts.join(' - ');
+
+    const endpointLine = (name: string, endpoint: string): string =>
+      `${label(name.padEnd(10))}: ${value(endpoint)}`;
 
     const content = [
       tone.bold.cyan(bannerTitle),
       '',
-      `${label('Environment')} ${value(env.NODE_ENV)}`,
-      `${label('Base URL   ')} ${value(payload.url)}`,
-      `${label('Docs       ')} ${value(payload.docs)}`,
-      `${label('Liveness   ')} ${value(payload.liveness)}`,
-      `${label('Readiness  ')} ${value(payload.readiness)}`,
+      `${label('Environment'.padEnd(10))}: ${value(env.NODE_ENV)}`,
+      endpointLine('Base URL', payload.url),
+      endpointLine('Docs', payload.docs),
+      endpointLine('Liveness', payload.liveness),
+      endpointLine('Readiness', payload.readiness),
     ].join('\n');
 
     const banner = boxen(content, {

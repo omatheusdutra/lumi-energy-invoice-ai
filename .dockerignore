@@ -9,6 +9,8 @@ node_modules/
 dist/
 coverage/
 coverage-full/
+web/.next/
+web/coverage/
 
 # Environment files
 .env

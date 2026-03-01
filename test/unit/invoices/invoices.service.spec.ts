@@ -27,6 +27,7 @@ describe('InvoicesService', () => {
       findByDedupCompositeKey: jest.fn(),
       findById: jest.fn(),
       create: jest.fn(),
+      createWithProcessing: jest.fn(),
       list: jest.fn(),
       findRecentByClientBeforeDate: jest.fn(),
       aggregateEnergy: jest.fn(),
@@ -92,6 +93,7 @@ describe('InvoicesService', () => {
     expect(result.valorTotalSemGd).toBe(65.9);
     expect(result.economiaGdRs).toBe(12.1);
     expect(repository.create).toHaveBeenCalledTimes(1);
+    expect(repository.createWithProcessing).not.toHaveBeenCalled();
     expect(alerts.evaluateAndPersist).toHaveBeenCalledTimes(1);
   });
 
@@ -124,5 +126,56 @@ describe('InvoicesService', () => {
 
     await expect(service.processUpload(file)).rejects.toBeInstanceOf(BadGatewayException);
     expect(processing.markFailed).toHaveBeenCalledTimes(1);
+  });
+
+  it('persists invoice atomically with processing status when data quality is enabled', async () => {
+    const file = {
+      mimetype: 'application/pdf',
+      buffer: Buffer.from('%PDF-1.4\ncontent', 'utf8'),
+      originalname: 'fatura.pdf',
+    } as Express.Multer.File;
+
+    const processingState = {
+      id: 'proc-atomic',
+      hashSha256: 'hash',
+      sourceFilename: 'fatura.pdf',
+      status: ProcessingStatus.RECEIVED,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      dedupCompositeKey: null,
+      numeroCliente: null,
+      mesReferencia: null,
+      rawLlmJson: null,
+      redactedLlmJson: null,
+      errorReason: null,
+      invoiceId: null,
+    } satisfies InvoiceProcessing;
+
+    processing.start.mockResolvedValue(processingState);
+    repository.findByHash.mockResolvedValue(null);
+    repository.findByDedupCompositeKey.mockResolvedValue(null);
+    llm.extractInvoiceData.mockResolvedValue({
+      [CLIENT_NUMBER_FIELD]: '3001116735',
+      [REFERENCE_MONTH_FIELD]: 'SET/2024',
+      [ELECTRIC_ENERGY_FIELD]: { quantidade_kwh: '100', valor_rs: '50,20' },
+      [SCEEE_ENERGY_FIELD]: { quantidade_kwh: '20', valor_rs: '10,30' },
+      [GD_COMPENSATED_ENERGY_FIELD]: { quantidade_kwh: '30', valor_rs: '12,10' },
+      [PUBLIC_LIGHTING_FIELD]: { valor_rs: '5,40' },
+    });
+    repository.createWithProcessing.mockImplementation(
+      async (data) =>
+        ({
+          id: 'inv-atomic',
+          createdAt: new Date('2024-09-10T00:00:00.000Z'),
+          ...data,
+        }) as never,
+    );
+
+    const result = await service.processUpload(file);
+
+    expect(result.id).toBe('inv-atomic');
+    expect(repository.createWithProcessing).toHaveBeenCalledTimes(1);
+    expect(repository.create).not.toHaveBeenCalled();
+    expect(processing.markStored).not.toHaveBeenCalled();
   });
 });

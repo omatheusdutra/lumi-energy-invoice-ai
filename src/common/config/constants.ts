@@ -1,5 +1,5 @@
-export const APP_DEFAULTS = {
-  APP_NAME: 'teste-lumi-api',
+﻿export const APP_DEFAULTS = {
+  APP_NAME: 'lumi-energy-api',
   PORT: 3000,
   LOG_LEVEL: 'info',
   OPENAI_MODEL: 'gpt-4.1',
@@ -27,3 +27,4 @@ export const APP_DEFAULTS = {
   KPI_TOP_N_DEFAULT: 5,
   RAW_LLM_AUDIT_TTL_DAYS: 180,
 } as const;
+

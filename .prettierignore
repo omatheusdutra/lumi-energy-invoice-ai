@@ -3,6 +3,8 @@ node_modules/
 dist/
 coverage/
 coverage-full/
+web/.next/
+web/coverage/
 
 # Caches and temporary folders
 .cache/

@@ -5,5 +5,5 @@
     "sourceMap": false,
     "outDir": "./dist"
   },
-  "exclude": ["node_modules", "dist", "test", "**/*spec.ts", "**/*e2e-spec.ts"]
+  "exclude": ["node_modules", "dist", "test", "web", ".next", "**/*spec.ts", "**/*e2e-spec.ts"]
 }

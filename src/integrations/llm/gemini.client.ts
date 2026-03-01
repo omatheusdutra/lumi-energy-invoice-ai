@@ -137,10 +137,6 @@ export class GeminiClient extends ResilientLlmClient {
       if (schema.required) {
         result.required = schema.required;
       }
-
-      if (typeof schema.additionalProperties === 'boolean') {
-        result.additionalProperties = schema.additionalProperties;
-      }
     }
 
     if (mappedType === 'ARRAY' && schema.items) {
@@ -176,7 +172,6 @@ type GeminiJsonSchemaNode = {
   type?: string | string[];
   properties?: Record<string, GeminiJsonSchemaNode>;
   required?: string[];
-  additionalProperties?: boolean;
   items?: GeminiJsonSchemaNode;
 };
 
@@ -185,7 +180,6 @@ type GeminiSchemaNode = {
   nullable?: boolean;
   properties?: Record<string, GeminiSchemaNode>;
   required?: string[];
-  additionalProperties?: boolean;
   items?: GeminiSchemaNode;
 };
 
