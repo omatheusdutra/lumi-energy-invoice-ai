@@ -2,7 +2,6 @@
 
 - Canonical project documentation: [../README.md](../README.md)
 - Frontend-only details: [../web/README.md](../web/README.md)
-- Submission report: [../SUBMISSION_REPORT.md](../SUBMISSION_REPORT.md)
 - Frontend performance profiling notes: [../web/PERF_REPORT.md](../web/PERF_REPORT.md)
 
 ## Scope

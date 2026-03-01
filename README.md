@@ -83,7 +83,7 @@ Cálculos obrigatórios implementados:
 | `GET`  | `/metrics`                   | Métricas Prometheus |
 | `GET`  | `/docs`                      | Swagger             |
 
-## 💻 Exemplos de requisições (curl)
+## 📥 Exemplos de requisições (curl)
 
 ### Upload e processamento de fatura
 
