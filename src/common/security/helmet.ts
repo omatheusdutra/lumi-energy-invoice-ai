@@ -6,7 +6,7 @@ const isProduction = env.NODE_ENV === 'production';
 export const helmetConfig = helmet({
   contentSecurityPolicy: isProduction
     ? {
-        useDefaults: true,
+        useDefaults: false,
         directives: {
           defaultSrc: ["'self'"],
           baseUri: ["'self'"],
