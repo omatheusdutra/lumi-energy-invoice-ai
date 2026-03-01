@@ -1,4 +1,4 @@
-﻿import { Bolt, BatteryCharging, PiggyBank, Wallet } from 'lucide-react';
+import { Bolt, BatteryCharging, PiggyBank, Wallet } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency, formatKwh, formatPercent } from '@/lib/format';
 

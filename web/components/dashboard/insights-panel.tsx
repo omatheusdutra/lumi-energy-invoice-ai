@@ -1,4 +1,4 @@
-﻿import { memo } from 'react';
+import { memo } from 'react';
 import { ArrowDownRight, ArrowUpRight, BellRing, Gauge } from 'lucide-react';
 import { type AlertsResponse, type KpiDashboard } from '@/lib/api/schemas';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

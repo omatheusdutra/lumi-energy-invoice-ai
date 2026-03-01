@@ -1,4 +1,4 @@
-﻿# Lumi Web Portal
+# Lumi Web Portal
 
 README canônico do projeto: [../README.md](../README.md)
 

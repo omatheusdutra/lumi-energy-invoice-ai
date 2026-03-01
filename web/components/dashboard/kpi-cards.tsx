@@ -1,4 +1,4 @@
-﻿import { Activity, BatteryCharging, LineChart, Zap } from 'lucide-react';
+import { Activity, BatteryCharging, LineChart, Zap } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { InlineAlert } from '@/components/ui/inline-alert';

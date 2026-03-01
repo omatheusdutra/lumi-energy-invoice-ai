@@ -1,4 +1,4 @@
-﻿export const APP_DEFAULTS = {
+export const APP_DEFAULTS = {
   APP_NAME: 'lumi-energy-api',
   PORT: 3000,
   LOG_LEVEL: 'info',

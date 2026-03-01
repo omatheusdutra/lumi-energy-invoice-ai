@@ -1,4 +1,4 @@
-﻿import { CloudUpload, FileCheck2, ShieldCheck, Sparkles } from 'lucide-react';
+import { CloudUpload, FileCheck2, ShieldCheck, Sparkles } from 'lucide-react';
 import { UploadPanel } from '@/components/upload/upload-panel';
 
 export default function UploadPage() {

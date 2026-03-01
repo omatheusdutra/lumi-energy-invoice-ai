@@ -1,4 +1,4 @@
-﻿# Documentation Index
+# Documentation Index
 
 - Canonical project documentation: [../README.md](../README.md)
 - Frontend-only details: [../web/README.md](../web/README.md)

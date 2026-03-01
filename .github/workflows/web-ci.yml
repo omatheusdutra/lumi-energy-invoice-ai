@@ -1,4 +1,4 @@
-﻿name: web-ci
+name: web-ci
 
 on:
   push:

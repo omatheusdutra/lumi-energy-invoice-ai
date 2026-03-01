@@ -1,4 +1,4 @@
-﻿import { memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { type ListInvoicesResponse } from '@/lib/api/schemas';
 import { formatCurrency, formatKwh, formatPercent } from '@/lib/format';
 import {

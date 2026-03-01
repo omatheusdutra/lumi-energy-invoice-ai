@@ -1,4 +1,4 @@
-﻿import {
+import {
   type AlertsResponse,
   type EnergyDashboard,
   type FinancialDashboard,

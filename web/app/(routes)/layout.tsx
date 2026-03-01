@@ -1,4 +1,4 @@
-﻿import type { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { AppShell } from '@/components/layout/app-shell';
 
 export default function RoutesLayout({ children }: { children: ReactNode }) {
