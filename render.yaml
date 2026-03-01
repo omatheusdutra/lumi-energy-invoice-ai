@@ -26,7 +26,7 @@ services:
       - key: OPENAI_MODEL
         value: gemini-2.5-flash
       - key: CORS_ORIGIN
-        value: "*"
+        value: '*'
 
   - type: web
     name: lumi-energy-web
@@ -43,9 +43,9 @@ services:
       - key: NEXT_PUBLIC_API_BASE_URL
         value: https://lumi-energy-api.onrender.com
       - key: NEXT_PUBLIC_ENABLE_EXPERIMENTAL_DASHBOARD
-        value: "false"
+        value: 'false'
       - key: NEXT_PUBLIC_ENABLE_RENDER_PROFILING
-        value: "false"
+        value: 'false'
 
 databases:
   - name: lumi-postgres
