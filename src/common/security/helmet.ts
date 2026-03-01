@@ -1,4 +1,4 @@
-import helmet from 'helmet';
+﻿import helmet from 'helmet';
 import { env } from '../config/env';
 
 const isProduction = env.NODE_ENV === 'production';
@@ -6,17 +6,17 @@ const isProduction = env.NODE_ENV === 'production';
 export const helmetConfig = helmet({
   contentSecurityPolicy: isProduction
     ? {
-        useDefaults: false,
+        useDefaults: true,
         directives: {
-          defaultSrc: ["'none'"],
-          baseUri: ["'none'"],
-          formAction: ["'none'"],
+          defaultSrc: ["'self'"],
+          baseUri: ["'self'"],
+          formAction: ["'self'"],
           frameAncestors: ["'none'"],
           imgSrc: ["'self'", 'data:'],
-          scriptSrc: ["'none'"],
-          styleSrc: ["'none'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
           connectSrc: ["'self'"],
-          fontSrc: ["'none'"],
+          fontSrc: ["'self'", 'data:'],
           objectSrc: ["'none'"],
           upgradeInsecureRequests: [],
         },
