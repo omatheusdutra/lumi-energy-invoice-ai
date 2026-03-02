@@ -1,15 +1,16 @@
-﻿# âš¡ Lumi Energy Invoice Intelligence
+# ⚡ Lumi Energy Invoice Intelligence
 
 [![Node.js](https://img.shields.io/badge/Node.js-20.19%2B-339933?logo=nodedotjs&logoColor=white)](#-setup-local)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6?logo=typescript&logoColor=white)](#-arquitetura)
-[![NestJS](https://img.shields.io/badge/NestJS-11-e0234e?logo=nestjs&logoColor=white)](#-decisoes-arquiteturais)
-[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma&logoColor=white)](#-decisoes-arquiteturais)
+[![NestJS](https://img.shields.io/badge/NestJS-11-e0234e?logo=nestjs&logoColor=white)](#-decis%C3%B5es-arquiteturais)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma&logoColor=white)](#-decis%C3%B5es-arquiteturais)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql&logoColor=white)](#-setup-local)
 [![Tests](https://img.shields.io/badge/Tests-Jest%20%2B%20Vitest-0ea5e9)](#-testes-e-mock-de-llm)
 [![License](https://img.shields.io/badge/License-MIT-111827)](LICENSE)
 
-API NestJS + portal Next.js para ingestÃ£o de faturas de energia em PDF, extraÃ§Ã£o multimodal com LLM, validaÃ§Ã£o JSON estrita, cÃ¡lculos do desafio Lumi e dashboards de energia/financeiro.
-Direcionado Ã  qualidade de produÃ§Ã£o: seguranÃ§a, idempotÃªncia, observabilidade e testes. âš¡ðŸ”’ðŸ§ ðŸ“ŠðŸ§ª
+API NestJS + portal Next.js para ingestão de faturas de energia em PDF, extração multimodal com LLM, validação JSON estrita, cálculos do desafio Lumi e dashboards de energia/financeiro.
+
+Foco em qualidade de produção: segurança, idempotência, observabilidade e testes.
 
 ## 🌐 Links de produção
 
@@ -18,43 +19,46 @@ Direcionado Ã  qualidade de produÃ§Ã£o: seguranÃ§a, idempotÃªncia, obs
 - 🧾 **Produção (JSON OpenAPI):** https://lumi-energy-api-nlin.onrender.com/docs-json
 - 🖥️ **Produção (Web):** https://lumi-energy-invoice-ai.vercel.app
 
+> Observação sobre o Render (plano free): após inatividade, a API pode levar alguns segundos para “acordar” na primeira requisição.
+
 ## 🔄 Atualização planejada
 
 - A ação **Reprocessar** exibida na interface de faturas está prevista para um próximo update.
-- No estado atual, o botão permanece desabilitado quando o backend não disponibiliza essa operação.
+- No estado atual, o botão pode permanecer desabilitado quando o backend não disponibiliza essa operação.
 - O objetivo é habilitar reprocessamento controlado sem quebrar o fluxo principal do teste.
-## ðŸ§­ Hierarquia da documentaÃ§Ã£o
 
-- `README.md` (raiz): referÃªncia canÃ´nica do projeto.
-- [web/README.md](web/README.md): detalhes especÃ­ficos do frontend.
-- [docs/README.md](docs/README.md): Ã­ndice rÃ¡pido sem duplicaÃ§Ã£o.
+## 🧭 Hierarquia da documentação
 
-## ðŸ§  Overview
+- `README.md` (raiz): referência canônica do projeto.
+- [web/README.md](web/README.md): detalhes específicos do frontend.
+- [docs/README.md](docs/README.md): índice rápido sem duplicação.
+
+## 🧠 Overview
 
 Fluxo principal exigido pelo teste:
 
 1. Upload de PDF (`POST /invoices/upload`).
 2. Envio do PDF ao LLM multimodal (sem OCR/parser local).
 3. Resposta em JSON estrito (schema fechado).
-4. ValidaÃ§Ã£o + normalizaÃ§Ã£o de nÃºmeros pt-BR.
-5. CÃ¡lculos derivados obrigatÃ³rios.
-6. PersistÃªncia relacional com Prisma/PostgreSQL.
-7. ExposiÃ§Ã£o dos endpoints de listagem e dashboards.
+4. Validação + normalização de números pt-BR.
+5. Cálculos derivados obrigatórios.
+6. Persistência relacional com Prisma/PostgreSQL.
+7. Exposição dos endpoints de listagem e dashboards.
 
-CÃ¡lculos obrigatÃ³rios implementados:
+Cálculos obrigatórios implementados:
 
 - `consumo_kwh = energia_eletrica_kwh + energia_sceee_kwh`
 - `energia_compensada_kwh = energia_compensada_gdi_kwh`
 - `valor_total_sem_gd = energia_eletrica_rs + energia_sceee_rs + contrib_ilum_rs`
 - `economia_gd_rs = energia_compensada_gdi_rs`
 
-## ðŸ—ï¸ Arquitetura
+## 🏗️ Arquitetura
 
 ### Backend
 
-- Framework: NestJS 11 (mÃ³dulos, DI, filtros, interceptors e guards).
+- Framework: NestJS 11 (módulos, DI, filtros, interceptors e guards).
 - ORM: Prisma sobre PostgreSQL.
-- AbstraÃ§Ã£o de LLM: interface `LlmClient` com providers:
+- Abstração de LLM: interface `LlmClient` com providers:
   - `GeminiClient`
   - `OpenAiResponsesClient`
 - Cross-cutting:
@@ -68,34 +72,34 @@ CÃ¡lculos obrigatÃ³rios implementados:
 
 - Next.js 14 (App Router) + TypeScript.
 - TanStack Query + Zod + Recharts.
-- Rotas de upload, dashboard, faturas, crÃ©ditos, unidades, configuraÃ§Ãµes e pagamentos.
+- Rotas de upload, dashboard, faturas, créditos, unidades, configurações e pagamentos.
 
-## ðŸ“¡ API Endpoints
+## 📡 API Endpoints
 
 ### Core do teste
 
-| MÃ©todo | Endpoint                | DescriÃ§Ã£o                   |
-| ------- | ----------------------- | ----------------------------- |
-| `POST`  | `/invoices/upload`      | Upload e processamento de PDF |
-| `GET`   | `/invoices`             | Listagem paginada com filtros |
-| `GET`   | `/dashboard/energia`    | Resultado de energia (kWh)    |
-| `GET`   | `/dashboard/financeiro` | Resultado financeiro (R$)     |
+| Método | Endpoint                | Descrição                      |
+| ------ | ----------------------- | ------------------------------ |
+| `POST` | `/invoices/upload`      | Upload e processamento de PDF  |
+| `GET`  | `/invoices`             | Listagem paginada com filtros  |
+| `GET`  | `/dashboard/energia`    | Resultado de energia (kWh)     |
+| `GET`  | `/dashboard/financeiro` | Resultado financeiro (R$)      |
 
 ### Complementares do projeto
 
-| MÃ©todo | Endpoint                     | DescriÃ§Ã£o            |
-| ------- | ---------------------------- | ---------------------- |
-| `GET`   | `/dashboard/kpis`            | KPIs e benchmark       |
-| `GET`   | `/alerts`                    | Alertas de anomalia    |
-| `GET`   | `/tariff-readiness/plans`    | Planos tarifÃ¡rios     |
-| `POST`  | `/tariff-readiness/simulate` | SimulaÃ§Ã£o tarifÃ¡ria |
-| `GET`   | `/`                          | Info bÃ¡sica da API    |
-| `GET`   | `/health/liveness`           | Liveness               |
-| `GET`   | `/health/readiness`          | Readiness              |
-| `GET`   | `/metrics`                   | MÃ©tricas Prometheus   |
-| `GET`   | `/docs`                      | Swagger                |
+| Método | Endpoint                     | Descrição              |
+| ------ | ---------------------------- | ---------------------- |
+| `GET`  | `/dashboard/kpis`            | KPIs e benchmark       |
+| `GET`  | `/alerts`                    | Alertas de anomalia    |
+| `GET`  | `/tariff-readiness/plans`    | Planos tarifários      |
+| `POST` | `/tariff-readiness/simulate` | Simulação tarifária    |
+| `GET`  | `/`                          | Info básica da API     |
+| `GET`  | `/health/liveness`           | Liveness               |
+| `GET`  | `/health/readiness`          | Readiness              |
+| `GET`  | `/metrics`                   | Métricas Prometheus    |
+| `GET`  | `/docs`                      | Swagger                |
 
-## ðŸ“¥ Exemplos de requisiÃ§Ãµes (curl)
+## 📥 Exemplos de requisições (curl)
 
 ### Upload e processamento de fatura
 
@@ -131,44 +135,10 @@ Resposta 201 (exemplo):
 curl "http://localhost:3000/invoices?numero_cliente=3001116735&mes_referencia=SET/2024&page=1&pageSize=20"
 ```
 
-Resposta 200 (exemplo):
-
-```json
-{
-  "data": [
-    {
-      "id": "00128fe2-1650-41f0-8524-982d45e92256",
-      "numeroCliente": "3001116735",
-      "mesReferencia": "SET/2024"
-    }
-  ],
-  "page": 1,
-  "pageSize": 20,
-  "total": 1,
-  "totalPages": 1
-}
-```
-
 ### Dashboard de energia
 
 ```bash
 curl "http://localhost:3000/dashboard/energia?numero_cliente=3001116735&periodo_inicio=2024-01&periodo_fim=2024-12"
-```
-
-Resposta 200 (exemplo):
-
-```json
-{
-  "consumo_kwh_total": 120,
-  "energia_compensada_kwh_total": 30,
-  "series": [
-    {
-      "mes_referencia": "SET/2024",
-      "consumo_kwh": 120,
-      "energia_compensada_kwh": 30
-    }
-  ]
-}
 ```
 
 ### Dashboard financeiro
@@ -177,25 +147,9 @@ Resposta 200 (exemplo):
 curl "http://localhost:3000/dashboard/financeiro?numero_cliente=3001116735&periodo_inicio=2024-01&periodo_fim=2024-12"
 ```
 
-Resposta 200 (exemplo):
+## 🚨 Tratamento de erros
 
-```json
-{
-  "valor_total_sem_gd_total": 65,
-  "economia_gd_total": 15,
-  "series": [
-    {
-      "mes_referencia": "SET/2024",
-      "valor_total_sem_gd": 65,
-      "economia_gd": 15
-    }
-  ]
-}
-```
-
-## ðŸš¨ Tratamento de erros
-
-Formato de erro padrÃ£o:
+Formato de erro padrão:
 
 ```json
 {
@@ -209,216 +163,127 @@ Formato de erro padrÃ£o:
 
 Status esperados:
 
-- `400`: arquivo invÃ¡lido, filtro invÃ¡lido ou ausÃªncia de `file`.
-- `422`: JSON/schema invÃ¡lido retornado pelo LLM.
+- `400`: arquivo inválido, filtro inválido ou ausência de `file`.
+- `422`: JSON/schema inválido retornado pelo LLM.
 - `502`: indisponibilidade do provider LLM/circuit breaker.
-- `503`: readiness indisponÃ­vel.
+- `503`: readiness indisponível.
 
-## ðŸ” VariÃ¡veis de ambiente
+## 🔐 Variáveis de ambiente
 
 Arquivo base: [.env.example](.env.example)
 
 > `OPENAI_API_KEY` e qualquer segredo de LLM ficam somente no backend.
-> No frontend use apenas variÃ¡veis `NEXT_PUBLIC_*`.
+> No frontend, use apenas variáveis `NEXT_PUBLIC_*`.
 
 ### Backend (principais)
 
-| VariÃ¡vel            | ObrigatÃ³ria | DescriÃ§Ã£o                         |
-| -------------------- | ------------ | ----------------------------------- |
-| `NODE_ENV`           | Sim          | `development`, `test`, `production` |
-| `APP_NAME`           | Sim          | Nome da API                         |
-| `PORT`               | Sim          | Porta da API (padrÃ£o 3000)         |
-| `DATABASE_URL`       | Sim          | ConexÃ£o PostgreSQL                 |
-| `OPENAI_API_KEY`     | Sim          | Chave do provider LLM               |
-| `OPENAI_BASE_URL`    | NÃ£o         | Base URL do provider                |
-| `OPENAI_MODEL`       | Sim          | Modelo LLM                          |
-| `OPENAI_TIMEOUT_MS`  | Sim          | Timeout LLM                         |
-| `OPENAI_MAX_RETRIES` | Sim          | Retries LLM                         |
-| `LOG_LEVEL`          | Sim          | NÃ­vel de logs                      |
-| `LOG_FORMAT`         | NÃ£o         | `pretty`/`json`                     |
+| Variável            | Obrigatória | Descrição                             |
+| ------------------- | ----------- | ------------------------------------- |
+| `NODE_ENV`          | Sim         | `development`, `test`, `production`   |
+| `APP_NAME`          | Sim         | Nome da API                           |
+| `PORT`              | Sim         | Porta da API (padrão 3000)            |
+| `DATABASE_URL`      | Sim         | Conexão PostgreSQL                    |
+| `OPENAI_API_KEY`    | Sim         | Chave do provider LLM                 |
+| `OPENAI_BASE_URL`   | Não         | Base URL do provider                  |
+| `OPENAI_MODEL`      | Sim         | Modelo LLM                            |
+| `OPENAI_TIMEOUT_MS` | Sim         | Timeout LLM                           |
 
-### Backend (seguranÃ§a e operaÃ§Ã£o)
+## ⚙️ Setup local
 
-| VariÃ¡vel                               |
-| --------------------------------------- |
-| `UPLOAD_MAX_MB`                         |
-| `JSON_BODY_LIMIT_MB`                    |
-| `URLENCODED_BODY_LIMIT_MB`              |
-| `CORS_ORIGIN`                           |
-| `RATE_LIMIT_TTL`                        |
-| `RATE_LIMIT_LIMIT`                      |
-| `TRUST_PROXY`                           |
-| `HEALTHCHECK_TIMEOUT_MS`                |
-| `MAX_PAGE_SIZE`                         |
-| `LLM_CIRCUIT_BREAKER_ENABLED`           |
-| `LLM_CIRCUIT_BREAKER_FAILURE_THRESHOLD` |
-| `LLM_CIRCUIT_BREAKER_COOLDOWN_MS`       |
-| `FEATURE_DATA_QUALITY_ENABLED`          |
-| `FEATURE_ALERTS_ENABLED`                |
-| `FEATURE_TARIFF_READINESS_ENABLED`      |
-| `FEATURE_BENCHMARK_ENABLED`             |
-| `ALERT_SPIKE_PERCENT_THRESHOLD`         |
-| `ALERT_ZSCORE_THRESHOLD`                |
-| `ALERT_BASELINE_MIN_MONTHS`             |
-| `KPI_TOP_N_DEFAULT`                     |
-| `RAW_LLM_AUDIT_TTL_DAYS`                |
-| `PRISMA_GENERATE_MAX_ATTEMPTS`          |
-| `PRISMA_GENERATE_BASE_DELAY_MS`         |
-| `PRISMA_MIGRATE_MAX_ATTEMPTS`           |
-| `PRISMA_MIGRATE_BASE_DELAY_MS`          |
+Pré-requisitos:
 
-### Frontend (`web/.env.example`)
+- Node.js 20.19+
+- Docker e Docker Compose (opcional, recomendado para banco)
 
-| VariÃ¡vel                                   | DescriÃ§Ã£o                               |
-| ------------------------------------------- | ----------------------------------------- |
-| `NEXT_PUBLIC_API_BASE_URL`                  | URL da API (ex.: `http://localhost:3000`) |
-| `NEXT_PUBLIC_APP_NAME`                      | Nome exibido no portal                    |
-| `NEXT_PUBLIC_ENABLE_EXPERIMENTAL_DASHBOARD` | Flag de UI                                |
-| `NEXT_PUBLIC_ENABLE_RENDER_PROFILING`       | Profiling em dev                          |
-
-## âš™ï¸ Setup local
-
-Pre-requisitos:
-
-- Node.js `20.19.0` (ver `.nvmrc`)
-- npm 10+
-- Docker + Docker Compose
-
-### InstalaÃ§Ã£o
+Instalação:
 
 ```bash
 npm ci
 npm --prefix web ci
 ```
 
-### Banco e migraÃ§Ãµes
+### Banco e Prisma
 
 ```bash
-docker compose up -d postgres
-npm run prisma:generate:safe
-npm run prisma:migrate:deploy:safe
-```
-
-### Seed opcional
-
-```bash
+npm run prisma:generate
+npm run prisma:migrate:deploy
 npm run prisma:seed
 ```
 
-## â–¶ï¸ ExecuÃ§Ã£o (dev e prod)
+## ▶️ Running (dev/prod)
 
-### Desenvolvimento
-
-API:
+Backend (dev):
 
 ```bash
-npm run dev:api
+npm run start:dev
 ```
 
-Web:
+Frontend (dev):
 
 ```bash
 npm run dev:web
 ```
 
-URLs:
-
-- API: `http://localhost:3000`
-- Swagger: `http://localhost:3000/docs`
-- Web: `http://localhost:3001/dashboard`
-
-### ProduÃ§Ã£o
-
-Backend:
+Build de produção:
 
 ```bash
 npm run build
-npm run start:prod
-```
-
-Frontend:
-
-```bash
 npm --prefix web run build
-npm --prefix web run start
 ```
 
-## ðŸ§ª Testes e mock de LLM
+## 🧪 Testes e mock de LLM
 
 Backend:
 
 ```bash
-npm run quality:check
 npm run test -- --runInBand
 npm run test:integration -- --runInBand
 npm run test:e2e -- --runInBand
-npm run test:cov
 ```
 
 Frontend:
 
 ```bash
-npm --prefix web run lint
-npm --prefix web run typecheck
 npm --prefix web run test
 npm --prefix web run test:cov
 ```
 
-Mock de LLM:
+Qualidade:
 
-- Unit tests usam `LlmClient` mockado.
-- E2E sobrescreve provider `LLM_CLIENT` com doubles, sem rede real.
+```bash
+npm run quality:check
+npm --prefix web run quality:check
+```
 
-## ðŸ›¡ï¸ Security notes
+## 🔒 Notas de segurança
 
-- ValidaÃ§Ã£o de PDF por MIME + assinatura `%PDF-`.
-- Limites de upload e body configurÃ¡veis.
-- `helmet`, `throttler` e `requestId` ativos.
-- Schema estrito (`additionalProperties: false`) + validaÃ§Ã£o Zod.
-- Retry/backoff/circuit-breaker para resiliÃªncia no provider LLM.
-- Logs estruturados com controle de stack e sem vazamento de payload sensÃ­vel.
+- Validação de upload por MIME + assinatura `%PDF-`.
+- Limites de payload e rate limiting.
+- `helmet` e proteção de headers.
+- Timeout e retry no cliente LLM.
+- Fallback/circuit breaker para instabilidade do provider.
 
-## ðŸ§© DecisÃµes arquiteturais
+## 🧩 Decisões arquiteturais
 
-### Framework backend: NestJS
+- **NestJS**: estrutura modular + DI + padrões robustos para API.
+- **Prisma**: produtividade com tipagem forte e migrations previsíveis.
+- **LLM via interface `LlmClient`**: desacoplamento de provider e testabilidade.
 
-- Modularidade, DI e testabilidade forte.
-- Pipeline nativo para validaÃ§Ã£o, filtros e observabilidade.
+Trade-offs considerados:
 
-### ORM: Prisma
+- Mais validação e filtros aumentam segurança e previsibilidade.
+- Circuit breaker reduz cascata de falhas externas.
+- Estrutura modular aumenta manutenção de longo prazo.
 
-- Tipagem ponta a ponta em TypeScript.
-- MigraÃ§Ãµes previsÃ­veis e queries agregadas eficientes.
-- Constraints para deduplicaÃ§Ã£o/idempotÃªncia (`hashSha256`, `dedupCompositeKey`).
+## ✅ Checklist do teste (resumo)
 
-### LLM: abstraÃ§Ã£o com providers plugÃ¡veis
+- Upload de PDF e processamento multimodal via LLM.
+- JSON estrito com validação.
+- Cálculos derivados obrigatórios persistidos.
+- Banco relacional com ORM.
+- Endpoints de listagem e dashboards de energia/financeiro.
+- Testes unitários/integrados/e2e sem dependência de chave real em cenários de teste.
 
-- `GeminiClient` e `OpenAiResponsesClient` sob `LlmClient`.
-- Reduz acoplamento e lock-in.
-- Permite fallback de provider sem tocar regra de negÃ³cio.
+---
 
-Trade-offs:
-
-- Mais validaÃ§Ãµes e resiliÃªncia aumentam complexidade.
-- Em troca, reduz risco de dados incorretos e melhora robustez operacional.
-
-## âœ… Checklist do teste Lumi
-
-| Item                                                   | Status |
-| ------------------------------------------------------ | ------ |
-| Upload de PDF via API                                  | âœ…    |
-| PDF enviado ao LLM multimodal (sem OCR local)          | âœ…    |
-| JSON estrito com schema fechado                        | âœ…    |
-| CÃ¡lculos obrigatÃ³rios implementados                  | âœ…    |
-| PersistÃªncia relacional com ORM                       | âœ…    |
-| `GET /invoices` com filtros/paginaÃ§Ã£o                | âœ…    |
-| `GET /dashboard/energia` e `GET /dashboard/financeiro` | âœ…    |
-| Tratamento de erro consistente (`400/422/502/503`)     | âœ…    |
-| Testes automatizados com mock de LLM                   | âœ…    |
-| DocumentaÃ§Ã£o completa de setup/env/execuÃ§Ã£o/API    | âœ…    |
-
-## ðŸ”— ReferÃªncias
-
-- Frontend: [web/README.md](web/README.md)
-- Ãndice de docs: [docs/README.md](docs/README.md)
-
+Se quiser, eu também reviso os outros READMEs (`docs/README.md` e `web/README.md`) para manter 100% de consistência de estilo/encoding após esse ajuste.
