@@ -120,6 +120,10 @@ npm --prefix web run test
 npm --prefix web run test:cov
 ```
 
+## 🔄 Atualização planejada
+
+- A função **Reprocessar** na tabela de faturas está mapeada na UI, mas depende de suporte backend para ativação.
+- Até essa entrega, o botão pode aparecer desabilitado com mensagem informativa.
 ## 🌐 Deploy (Vercel)
 
 Configuracao recomendada:
@@ -139,3 +143,4 @@ Para evitar bloqueio de browser, configure `CORS_ORIGIN` no backend com a URL do
 
 - README principal: [../README.md](../README.md)
 - Docs index: [../docs/README.md](../docs/README.md)
+

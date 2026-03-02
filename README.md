@@ -18,6 +18,11 @@ Direcionado Ã  qualidade de produÃ§Ã£o: seguranÃ§a, idempotÃªncia, obs
 - 🧾 **Produção (JSON OpenAPI):** https://lumi-energy-api-nlin.onrender.com/docs-json
 - 🖥️ **Produção (Web):** https://lumi-energy-invoice-ai.vercel.app
 
+## 🔄 Atualização planejada
+
+- A ação **Reprocessar** exibida na interface de faturas está prevista para um próximo update.
+- No estado atual, o botão permanece desabilitado quando o backend não disponibiliza essa operação.
+- O objetivo é habilitar reprocessamento controlado sem quebrar o fluxo principal do teste.
 ## ðŸ§­ Hierarquia da documentaÃ§Ã£o
 
 - `README.md` (raiz): referÃªncia canÃ´nica do projeto.
@@ -416,3 +421,4 @@ Trade-offs:
 
 - Frontend: [web/README.md](web/README.md)
 - Ãndice de docs: [docs/README.md](docs/README.md)
+
