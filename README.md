@@ -78,26 +78,26 @@ Cálculos obrigatórios implementados:
 
 ### Core do teste
 
-| Método | Endpoint                | Descrição                      |
-| ------ | ----------------------- | ------------------------------ |
-| `POST` | `/invoices/upload`      | Upload e processamento de PDF  |
-| `GET`  | `/invoices`             | Listagem paginada com filtros  |
-| `GET`  | `/dashboard/energia`    | Resultado de energia (kWh)     |
-| `GET`  | `/dashboard/financeiro` | Resultado financeiro (R$)      |
+| Método | Endpoint                | Descrição                     |
+| ------ | ----------------------- | ----------------------------- |
+| `POST` | `/invoices/upload`      | Upload e processamento de PDF |
+| `GET`  | `/invoices`             | Listagem paginada com filtros |
+| `GET`  | `/dashboard/energia`    | Resultado de energia (kWh)    |
+| `GET`  | `/dashboard/financeiro` | Resultado financeiro (R$)     |
 
 ### Complementares do projeto
 
-| Método | Endpoint                     | Descrição              |
-| ------ | ---------------------------- | ---------------------- |
-| `GET`  | `/dashboard/kpis`            | KPIs e benchmark       |
-| `GET`  | `/alerts`                    | Alertas de anomalia    |
-| `GET`  | `/tariff-readiness/plans`    | Planos tarifários      |
-| `POST` | `/tariff-readiness/simulate` | Simulação tarifária    |
-| `GET`  | `/`                          | Info básica da API     |
-| `GET`  | `/health/liveness`           | Liveness               |
-| `GET`  | `/health/readiness`          | Readiness              |
-| `GET`  | `/metrics`                   | Métricas Prometheus    |
-| `GET`  | `/docs`                      | Swagger                |
+| Método | Endpoint                     | Descrição           |
+| ------ | ---------------------------- | ------------------- |
+| `GET`  | `/dashboard/kpis`            | KPIs e benchmark    |
+| `GET`  | `/alerts`                    | Alertas de anomalia |
+| `GET`  | `/tariff-readiness/plans`    | Planos tarifários   |
+| `POST` | `/tariff-readiness/simulate` | Simulação tarifária |
+| `GET`  | `/`                          | Info básica da API  |
+| `GET`  | `/health/liveness`           | Liveness            |
+| `GET`  | `/health/readiness`          | Readiness           |
+| `GET`  | `/metrics`                   | Métricas Prometheus |
+| `GET`  | `/docs`                      | Swagger             |
 
 ## 📥 Exemplos de requisições (curl)
 
@@ -177,16 +177,16 @@ Arquivo base: [.env.example](.env.example)
 
 ### Backend (principais)
 
-| Variável            | Obrigatória | Descrição                             |
-| ------------------- | ----------- | ------------------------------------- |
-| `NODE_ENV`          | Sim         | `development`, `test`, `production`   |
-| `APP_NAME`          | Sim         | Nome da API                           |
-| `PORT`              | Sim         | Porta da API (padrão 3000)            |
-| `DATABASE_URL`      | Sim         | Conexão PostgreSQL                    |
-| `OPENAI_API_KEY`    | Sim         | Chave do provider LLM                 |
-| `OPENAI_BASE_URL`   | Não         | Base URL do provider                  |
-| `OPENAI_MODEL`      | Sim         | Modelo LLM                            |
-| `OPENAI_TIMEOUT_MS` | Sim         | Timeout LLM                           |
+| Variável            | Obrigatória | Descrição                           |
+| ------------------- | ----------- | ----------------------------------- |
+| `NODE_ENV`          | Sim         | `development`, `test`, `production` |
+| `APP_NAME`          | Sim         | Nome da API                         |
+| `PORT`              | Sim         | Porta da API (padrão 3000)          |
+| `DATABASE_URL`      | Sim         | Conexão PostgreSQL                  |
+| `OPENAI_API_KEY`    | Sim         | Chave do provider LLM               |
+| `OPENAI_BASE_URL`   | Não         | Base URL do provider                |
+| `OPENAI_MODEL`      | Sim         | Modelo LLM                          |
+| `OPENAI_TIMEOUT_MS` | Sim         | Timeout LLM                         |
 
 ## ⚙️ Setup local
 
