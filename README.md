@@ -285,5 +285,3 @@ Trade-offs considerados:
 - Testes unitários/integrados/e2e sem dependência de chave real em cenários de teste.
 
 ---
-
-Se quiser, eu também reviso os outros READMEs (`docs/README.md` e `web/README.md`) para manter 100% de consistência de estilo/encoding após esse ajuste.
